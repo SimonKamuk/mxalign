@@ -2,7 +2,7 @@ import xarray as xr
 import numpy as np
 
 from ..properties.properties import Time
-from ..properties.utils import properties_from_attrs
+from ..properties.utils import properties_from_attrs, update_time_property
 @xr.register_dataset_accessor("time")
 class TimeAccessor:
     def __init__(self, ds):
@@ -92,6 +92,7 @@ def _align_forecast_observation(ds_forecast, ds_observation, only_common=False,l
             ds_observation, 
             join="outer", 
             exclude=set(ds_forecast_stacked.coords) | set(ds_observation.coords) - set(["valid_time"]))
+    ds_forecast_aligned = update_time_property(ds_forecast_aligned, Time.OBSERVATION)
     return ds_forecast_aligned, ds_observation_aligned
 
 def _align_observation_observation(ds1, ds2, only_common=False):
@@ -120,6 +121,7 @@ def _align_observation_forecast(ds_observation, ds_forecast, only_common=False):
 
     ds_observation_aligned = ds_observation.sel(valid_time=ds_forecast_cut.valid_time)
     ds_observation_aligned = ds_observation_aligned.transpose("reference_time", "lead_time", ...)
+    ds_observation_aligned = update_time_property(ds_observation_aligned, Time.FORECAST)
     if only_common:
         return ds_observation_aligned, ds_forecast_cut
     else:
