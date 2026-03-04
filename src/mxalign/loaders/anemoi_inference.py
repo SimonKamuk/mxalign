@@ -3,7 +3,9 @@ from ..properties.properties import Space, Time, Uncertainty
 from .base import BaseLoader
 
 DEFAULTS={
-    "chunks": "auto"
+    "chunks": "auto",
+    "engine": "h5netcdf",
+    "parallel": True
 }
 
 @register_loader
@@ -19,7 +21,6 @@ class AnemoiInferenceLoader(BaseLoader):
         import xarray as xr
         
         files = [files] if isinstance(self.files, str) else self.files
- 
         times = xr.open_dataset(files[0])["time"].values
         lead_times = times - times[0]    
 
