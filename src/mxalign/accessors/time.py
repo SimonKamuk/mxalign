@@ -96,10 +96,11 @@ def _align_forecast_observation(ds_forecast, ds_observation, only_common=False,l
     return ds_forecast_aligned, ds_observation_aligned
 
 def _align_observation_observation(ds1, ds2, only_common=False):
+    exclude = (set(ds1.dims) | set(ds2.dims)) - set(["valid_time"])
     if only_common:
-        ds1_aligned, ds2_aligned = xr.align(ds1, ds2, join="inner", exclude=(set(ds1.coords) | set(ds2.coords)) - set(["valid_time"]))
+        ds1_aligned, ds2_aligned = xr.align(ds1, ds2, join="inner", exclude=exclude)
     else:
-        ds1_aligned, ds2_aligned = xr.align(ds1, ds2, join="outer", exclude=(set(ds1.coords) | set(ds2.coords)) - set(["valid_time"]))
+        ds1_aligned, ds2_aligned = xr.align(ds1, ds2, join="outer", exclude=exclude)
     return ds1_aligned, ds2_aligned
 
 def _align_observation_forecast(ds_observation, ds_forecast, only_common=False):
