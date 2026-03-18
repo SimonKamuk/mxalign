@@ -38,7 +38,7 @@ def create_cartopy_crs(projection, kws_projection, kws_globe=None) -> ccrs.Proje
         projection = PROJECTIONS[projection]
     except KeyError:
         raise ValueError(f"Unsupported projection: {projection}")
-    kwargs = kws_projection.copy()
+    kws_projection.copy()
 
     # - Move globe keywords to different dictionary
     if kws_globe:
