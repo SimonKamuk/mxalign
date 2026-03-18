@@ -2,7 +2,7 @@ from .registry import register_transformation
 
 
 @register_transformation("rename")
-def transform(ds, rename_dict):
+def transform_rename(ds, rename_dict):
     new_dict = {}
     for new_name, old_names in rename_dict.items():
         for name in ds.keys():
@@ -14,7 +14,7 @@ def transform(ds, rename_dict):
 
 
 @register_transformation("kelvin_to_celcius")
-def transform(ds, variables, inverse=False):
+def transform_kelvin_to_celcius(ds, variables, inverse=False):
     T_C2K = 273.15
     if isinstance(variables, str):
         variables = [variables]
